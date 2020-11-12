@@ -41,6 +41,16 @@ H_analog_lpf(s) = poly2sym(num, s)/poly2sym(denom, s);
 %% Bandpass and Discrete Transfer Function
 H_analog_bpf(s) = H_analog_lpf((s^2 + sigma_0^2)/(s*B));
 H_discrete_bpf = H_analog_bpf((z-1)/(z+1));
+
+% get coefficients of analog bpf
+[num_analog, denom_analog] = numden(H_analog_bpf);
+num_analog = sym2poly(expand(num_analog));
+denom_analog = sym2poly(expand(denom_analog));
+k = denom_analog(1);
+num_analog = num_analog/k;
+denom_analog = denom_analog/k;
+
+% get coefficients of discrete bpf
 [num_discrete, denom_discrete] = numden(H_discrete_bpf);
 num_discrete = sym2poly(num_discrete);
 denom_discrete = sym2poly(denom_discrete);
